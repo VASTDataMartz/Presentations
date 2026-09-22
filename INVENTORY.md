@@ -269,15 +269,20 @@ to an audience.
 | Kafka mechanics (partitions, offsets, consumer groups) | — | — | slides 32–45 |
 | Tokenomics / chargeback / multi-tenancy | — | views 6–7 | — |
 
-**Asset A page 42 and asset C/D slide 59 are the same slide with different numbers:**
+**Asset A page 42 and asset C/D slide 59 are the same slide. They disagreed on
+the latency figure — now resolved, see §6.**
 
 | Claim | A p. 42 | C/D slide 59 (PDF p. 58) |
 |---|---|---|
-| Throughput | up to 1 M events/sec per CNode | up to 1 M events/sec per CNode |
-| Latency | "with **neae zero** latency" (typo for *near zero*) | "with **sub-4ms** latency" |
+| Throughput | up to 1M events/sec per CNode | up to 1M events/sec per CNode |
+| Latency (was) | "with **neae zero** latency" (typo for *near zero*) | "with **sub-4ms** latency" |
+| Latency (now) | "with **sub-4ms** latency" | unchanged |
 
-Two different latency claims for the same product on the same slide, and a typo
-in A. Pick one number and fix the typo before either deck is reused.
+The sentence is otherwise identical in both decks, and this was the **only**
+latency figure in either one — verified across all slide text and all 31
+speaker-notes blocks. Slide 60 of C/D adds "10x faster than Kafka" and "Up to
+1 million events/sec per CNode", which is throughput only and consistent with
+both decks.
 
 **Other things worth fixing**
 
@@ -292,7 +297,50 @@ in A. Pick one number and fix the typo before either deck is reused.
 5. B's four template-literal `<h3>` headings (`'+m.name+'` etc.) are harmless
    at runtime but will confuse anyone reading or diffing the source.
 
-## 6. Gaps in the set
+## 6. Corrections applied
+
+**Standardized the Event Broker latency claim on "sub-4ms"** (2026-09-22).
+
+| File | Change |
+|---|---|
+| `2025_VAST_Data_AI_Factory_Basics.pdf` p. 42 | `with neae zero latency` → `with sub-4ms latency` |
+| `Copy_-_VAST__AIOS_Kafka.pptx` / `.pdf` | **none** — already read `sub-4ms`, left byte-identical |
+
+The typo disappeared with the rewrite, so no separate fix was needed. The
+corrected PDF is committed here under its original filename, as a drop-in
+replacement.
+
+### How the PDF was edited
+
+Asset A has no source PowerPoint in this set, so the change was made in the
+PDF itself. Relevant mechanics, in case this has to be redone:
+
+- The page is a macOS Quartz export. The whole line is a single `TJ` array of
+  glyph runs with per-glyph kerning, inside one `BT`/`ET` block, so replacing a
+  run at the end of the line lets the rest re-flow on its own — no absolute
+  repositioning needed.
+- Body text uses the subset font `/TT16` (`AAAAAQ+ArialMT`), whose embedded
+  subset contains only the digits **0, 1, 3 — no "4"**. The `4` was therefore
+  drawn from `/TT20` (`AAAAAU+ArialMT`, the page-number font already on that
+  page, all ten digits, width 556) by switching fonts between `TJ` operators
+  inside the same text block. Both are ArialMT subsets, so the glyph is
+  identical in shape and metrics.
+- Glyph codes used, from each font's `ToUnicode` CMap: `s`=40, `u`=48, `b`=46,
+  `-`=79, `m`=55 in `/TT16`; `4`=35 in `/TT20`. Kerning values were reused from
+  the same characters elsewhere in the same line.
+
+Verified after patching: 47 pages in, 47 out; page 42 is the **only** page whose
+text or rendering changed (all 47 pages rendered at 72 dpi and hash-compared);
+per-page embedded-image counts identical; file size unchanged at 13.8 MB;
+document unencrypted and every page still renders; zero occurrences of `neae`
+or `near zero` remain and exactly one of `sub-4ms`.
+
+The replacement was also checked visually at 400 dpi against the original — the
+borrowed `4` matches the surrounding text in weight, colour and baseline, and
+the shorter line simply ends earlier (it is left-aligned, and `latency—scales…`
+continues on the next line as before).
+
+## 7. Gaps in the set
 
 - **No editable source for A** (PDF only) — edits require the original PowerPoint.
 - **No speaker notes for A or B** — only C carries narration.
