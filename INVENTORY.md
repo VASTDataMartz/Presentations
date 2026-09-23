@@ -16,17 +16,26 @@ slide/shape/notes tree via `python-pptx`, DOM/CSS/JS analysis of the HTML).
 **Three distinct works, four files:** C and D are the same deck (D is a PDF
 export of C, minus C's one hidden slide). A and B are independent assets.
 
-**Coverage at a glance**
+### What each one is
 
-- **A — AI Factory Basics:** enablement/education deck. AI fundamentals (GPUs,
-  training, fine-tuning, agents, RAG, vectors, KV cache) → AI Factory
-  definitions → market/pain points → VAST + NVIDIA positioning.
-- **B — AI Factory dashboard demo:** a clickable, animated *product
-  demonstration* (not slides) of a life-sciences AI factory running on VAST,
-  with simulated live telemetry.
-- **C/D — VAST AIOS Kafka / Event Broker:** technical deck. Events primer →
-  DASE architecture → Kafka concepts (topics, partitions, pub/sub, consumer
-  groups) → VAST Event Broker implementation and claims.
+| # | Asset | Type | Length | Description | Made for |
+|---|-------|------|--------|-------------|----------|
+| **A** | `2025_VAST_Data_AI_Factory_Basics.pdf` | Slide deck (PDF, PowerPoint export) | 47 pages | **AI literacy primer that ends in VAST positioning.** Builds from first principles — CPU vs GPU parallelism, how models are made, training vs inference, fine-tuning and LoRA, what agents are — then defines "AI Factory" and "AI Data Platform" using NVIDIA's own wording, then a full RAG/vector tutorial (pipelines, embedding, retrieval, vectors, similarity search, ANN, context, KV cache, CMX), then turns to market: competitor "pitch vs reality", fragmented-stack pain points, and finally VAST DASE, Event Broker, InsightEngine and the VAST + NVIDIA stack. | Teaching. New hires, SEs ramping, customers new to AI. Not a pitch. |
+| **B** | `ai-factory.v6.html` | Interactive web app (single self-contained file) | 13 views, 31 charts | **A simulated operator console for a life-sciences AI factory on VAST** (1,024 GPUs, 8.4 PB). Thirteen tabs from Factory Overview and GPU Fleet through Tokenomics, Autonomous Lab, Cleanrooms, Telemetry and Self-service. Live-updating charts, an alarm feed, scripted incidents (a node throwing XID 79, a plateaued fine-tune, an endpoint with rising p95) and clickable actions — run a pipeline, run a drug-discovery campaign, provision a governed service, ask an agent to diagnose the estate. All data simulated and labelled as such. | Live demo — booth, customer meeting, screen-share. Not presented page by page. |
+| **C** | `Copy_-_VAST__AIOS_Kafka.pptx` | Technical conference talk (editable source) | 67 slides (1 hidden) | **"From Stream to Action"** — presenter Suyash Ramineni. Opens on 20 years of data-management complexity, then a long visual build on what events are and why they matter. Pivots to VAST's DASE architecture (limits of shared-nothing, disaggregated shared-everything, asymmetric clusters, DataStore/Element Store). Then a real Kafka primer — immutable log, topics as tables, partitions and ordering, round-robin producers, consumer offsets, consumer groups. Then how VAST implements a Kafka-compliant broker (topics as DataBase tables, VAST transactions instead of commit markers, bucket = virtual cluster, VIP partition leaders), the row-vs-column database foundation, and the Event Broker's claims and management experience. | Technical audience — architects, data engineers, conference/meetup. **The only asset with speaker notes.** |
+| **D** | `Copy_-_VAST__AIOS_Kafka.pdf` | PDF export of C | 66 pages | Same talk, handout form. Drops C's one hidden slide (the Element Store) and **carries none of the speaker notes** — and ~28 of its pages are near-textless animation builds, so it reads poorly standalone. | Sharing or printing after the talk, not reading cold. |
+
+**Distinctions that matter when picking one up:**
+
+- **A and C overlap on VAST platform content but target opposite audiences.**
+  A explains what a vector *is*; C explains how partition leaders map to VIP
+  addresses. A is the on-ramp, C is the deep end.
+- **C is the only editable source in the set**, and the only one with
+  narration. A is PDF-only; B is built HTML with no project files.
+- **D is strictly derivative of C.** If you need the Kafka talk, start from C
+  and export fresh rather than editing D.
+- **B is not a deck** and will not work as one — it needs a browser and
+  someone driving it.
 
 ---
 
